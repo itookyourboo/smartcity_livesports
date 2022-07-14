@@ -1,6 +1,14 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {HomeScreen, LoginScreen, EventsScreen, FeedScreen, ScheduleScreen, RegisterScreen} from "./src/Screens";
+import {
+    HomeScreen,
+    LoginScreen,
+    EventsScreen,
+    FeedScreen,
+    ScheduleScreen,
+    RegisterScreen,
+    EventApplyScreen
+} from "./src/Screens";
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +36,11 @@ function App() {
                         }}
                     />
                 ))}
+                <Stack.Screen
+                    name="event_apply"
+                    component={EventApplyScreen}
+                    options={({route}) => ({title: route.params.title})}
+                />
             </Stack.Navigator>
         </NavigationContainer>
     );
