@@ -4,45 +4,29 @@ import {HomeScreen, LoginScreen, EventsScreen, FeedScreen, ScheduleScreen} from 
 
 const Stack = createNativeStackNavigator();
 
+const screens = [
+    {name: 'home', component: HomeScreen, title: 'Умный Город: Живи спортом', opts: {}},
+    {name: 'login', component: LoginScreen, title: 'Регистрация', opts: {}},
+    {name: 'events', component: EventsScreen, title: 'Календарь мероприятий', opts: {}},
+    {name: 'schedule', component: ScheduleScreen, title: 'График соревнований', opts: {}},
+    {name: 'feed', component: FeedScreen, title: 'Лента новостей', opts: {}},
+]
+
 function App() {
     return (
         <NavigationContainer>
             <Stack.Navigator>
-                <Stack.Screen
-                    name="home"
-                    component={HomeScreen}
-                    options={{
-                        title: 'Умный Город. Живи спортом'
-                    }}
-                />
-                <Stack.Screen
-                    name="login"
-                    component={LoginScreen}
-                    options={{
-                        title: 'Регистрация',
-                    }}
-                />
-                <Stack.Screen
-                    name="events"
-                    component={EventsScreen}
-                    options={{
-                        title: 'Календарь мероприятий',
-                    }}
-                />
-                <Stack.Screen
-                    name="schedule"
-                    component={ScheduleScreen}
-                    options={{
-                        title: 'График соревнований',
-                    }}
-                />
-                <Stack.Screen
-                    name="feed"
-                    component={FeedScreen}
-                    options={{
-                        title: 'Лента новостей',
-                    }}
-                />
+                {screens.map(({name, component, title, opts}) => (
+                    <Stack.Screen
+                        key={name}
+                        name={name}
+                        component={component}
+                        options={{
+                            title: title,
+                            ...opts
+                        }}
+                    />
+                ))}
             </Stack.Navigator>
         </NavigationContainer>
     );
