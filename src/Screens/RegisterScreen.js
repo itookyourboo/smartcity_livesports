@@ -1,8 +1,13 @@
 import React from "react";
-import {StyleSheet, Text, View, Button, TextInput} from "react-native";
+import {StyleSheet, Text, View, Button, TextInput, Keyboard, TouchableWithoutFeedback, Platform, KeyboardAvoidingView} from "react-native";
 
 function LoginScreen({navigation}) {
     return (
+        <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={style.container}
+        >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
             <Text>Регистрация</Text>
             <TextInput
@@ -10,35 +15,40 @@ function LoginScreen({navigation}) {
                 // onChangeText={onChangeNumber}
                 // value={number}
                 placeholder="Ваш никнейм"
-                keyboardType="numeric"
+                // keyboardType="numeric"
             />
             <TextInput
                 style={style.input}
                 // onChangeText={onChangeNumber}
                 // value={number}
                 placeholder="Почта"
-                keyboardType="numeric"
+                keyboardType="email-address"
             />
             <TextInput
                 style={style.input}
                 // onChangeText={onChangeNumber}
                 // value={number}
                 placeholder="Номер телефона"
-                keyboardType="numeric"
+                keyboardType="phone-pad"
             />
             <TextInput
                 style={style.input}
-                // onChangeText={onChangeNumber}
-                // value={number}
                 placeholder="Придумайте пароль"
-                keyboardType="numeric"
+                secureTextEntry={true}
+                autoCapitalize='none'
             />
             <Button title="Войти" onPress={() => navigation.navigate('home')}/>
         </View>
+        </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
     );
 }
 
 const style = StyleSheet.create({
+    container: {
+        flex: 1
+    },
+    
     input: {
         height: 50,
         width: 200,
