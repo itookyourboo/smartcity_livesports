@@ -1,33 +1,45 @@
 import {Text, View, Image, StyleSheet, ScrollView} from "react-native";
 
+
+const news = [
+    {
+        date: '15 июля',
+        title: 'Команда "кукумбер" выиграла в хакатоне "умный город"!',
+        url: 'https://s9.stc.all.kpcdn.net/family/wp-content/uploads/2022/02/ogurzi_polza_i_vred_oblogka_960-960x540.jpg'
+    },
+    {
+        date: '10 июля',
+        title: 'Своей картиной "Спортсмены" Малевич хотел сказать, что болеет за Мурманскуюы футбольную команду - Север',
+        url: 'https://aif-s3.aif.ru/images/013/650/d3a1813cbc20fbd6c7493361e9aa9f89.jpg'
+    },
+    {
+        date: '2 июля', title: 'Скоро будет хакатон!!!',
+        url: 'https://www.passwordrevelator.net/blog/wp-content/uploads/2019/11/smart-city-ville-connect%C3%A9.jpg'
+    },
+]
+
 function FeedScreen({navigation}) {
     return (
-        <ScrollView>
         <View style={{alignItems: 'center', justifyContent: 'center'}}>
-
-            <View style={style.block}>
-                <Image style={style.photo} source = {{uri: "https://s9.stc.all.kpcdn.net/family/wp-content/uploads/2022/02/ogurzi_polza_i_vred_oblogka_960-960x540.jpg"}}/>
-                <View style={style.descr}>
-                    <Text>15 июля</Text>
-                    <Text style={style.news}>Команда "кокумбер" выйграла в хакатоне "умный город"!</Text>
-                </View>
-            </View>
-
-            <View style={style.block}>
-                <Image style={style.photo} source = {{uri: "https://upload.wikimedia.org/wikipedia/commons/2/2a/%D0%A1%D0%BF%D0%BE%D1%80%D1%82%D1%81%D0%BC%D0%B5%D0%BD%D1%8B._1930-1931._%D0%93%D0%A0%D0%9C.png"}}/>
-                <View style={style.descr}>
-                    <Text>2 мая</Text>
-                    <Text style={style.news}>Своей картиной "Спортсмены" Малевич хотел сказать, что болеет за Мурманскуюы футбольную команду - Север</Text>
-                </View>
-            </View>
+            <ScrollView>
+                {news.map(({date, title, url}) => (
+                    <View key={title} style={style.block}>
+                        <Image style={style.photo}
+                               source={{uri: url}}/>
+                        <View style={style.descr}>
+                            <Text>{date}</Text>
+                            <Text style={style.news}>{title}</Text>
+                        </View>
+                    </View>
+                ))}
+            </ScrollView>
         </View>
-        </ScrollView>
     );
 }
 
 const style = StyleSheet.create({
     block: {
-        marginTop: 30,
+        marginTop: 16,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
