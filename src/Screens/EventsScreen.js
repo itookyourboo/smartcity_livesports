@@ -21,6 +21,7 @@ function EventsScreen({navigation}) {
                         <Card key={props.title}>
                             <Card.Title>{props.title || 'Title'}</Card.Title>
                             <Card.Divider/>
+                            <Text>{ props.date || '30 июля 2022' }</Text>
                             <Text style={{marginBottom: 10}}>{props.description || 'Описание мероприятия'}</Text>
                             <Button type="outline" title="Подробнее"></Button>
                         </Card>
