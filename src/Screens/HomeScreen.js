@@ -12,7 +12,6 @@ const btns = [
 function HomeScreen({navigation}) {
     return (
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <Text>Home Screen</Text>
             <View style={{marginTop: 10}}>
                 {
                     btns.map(({title, screen}) => (
