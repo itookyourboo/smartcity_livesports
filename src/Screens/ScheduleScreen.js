@@ -1,9 +1,9 @@
 import { color } from "@rneui/base";
-import {Text, View, StyleSheet} from "react-native";
+import {Text, View, StyleSheet, Button} from "react-native";
 
 const compl = [
-    {date: "7 августа", sport: 'теннис'},
-    {date: "15 августа", sport: 'волейбол'},
+    {date: "7 августа", sport: 'Теннис'},
+    {date: "15 августа", sport: 'Волейбол'},
 ]
 
 // random color
@@ -17,8 +17,9 @@ function ScheduleScreen({navigation}) {
                 <View style={style.date}>
                     <Text style={style.num}>{date}</Text>
                 </View>
-                <View>
+                <View style={style.more}>
                     <Text style={style.desc}>{sport}</Text>
+                    <Button type="outline" style={style.btn} title="Подробнее" onPress={() => toggleDialog(props)}/>
                 </View>
             </View>
             ))
@@ -29,24 +30,37 @@ function ScheduleScreen({navigation}) {
 
 const style = StyleSheet.create({
     block: {
-        backgroundColor: '#7AC1F8',
+        // backgroundColor: '#7AC1F8',
         marginTop: 20,
         alignSelf: 'stretch',
         padding: 15,
         marginHorizontal: 10,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.30,
+        shadowRadius: 4.65,
+        elevation: 8,
+        backgroundColor: '#F6F6F6',
     },
+
     num: {
-        fontSize: 25,
-        color: 'white',
-        fontWeight: 'bold',
-        marginBottom: 10,
+        fontSize: 17,
+        fontWeight: '400',
+        marginBottom: 5,
     },
 
     desc: {
-        fontSize: 20,
-        fontWeight: '400',
-        color: 'white'
-    }
+        fontSize: 23,
+        fontWeight: '500',
+    },
+
+    more: {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
 })
 
 export default ScheduleScreen;
