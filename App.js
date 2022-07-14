@@ -1,6 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {HomeScreen, LoginScreen, EventsScreen, FeedScreen, ScheduleScreen} from "./src/Screens";
+import {HomeScreen, LoginScreen, EventsScreen, FeedScreen, ScheduleScreen, RegisterScreen} from "./src/Screens";
 
 const Stack = createNativeStackNavigator();
 
@@ -10,6 +10,7 @@ const screens = [
     {name: 'events', component: EventsScreen, title: 'Календарь мероприятий', opts: {}},
     {name: 'schedule', component: ScheduleScreen, title: 'График соревнований', opts: {}},
     {name: 'feed', component: FeedScreen, title: 'Лента новостей', opts: {}},
+    {name: 'reg', component: RegisterScreen, title: 'Создать аккаунт', opts: {}},
 ]
 
 function App() {

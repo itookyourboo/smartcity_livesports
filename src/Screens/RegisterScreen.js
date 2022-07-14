@@ -1,32 +1,39 @@
- // экран регистрации:
-// имя фамилия
-// телефон
-// придумайте пароль
-// зарегистрироваться -> главный экран
-
 import React from "react";
 import {StyleSheet, Text, View, Button, TextInput} from "react-native";
 
 function LoginScreen({navigation}) {
     return (
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <Text>Добро пожаловать!</Text>
+            <Text>Регистрация</Text>
             <TextInput
                 style={style.input}
                 // onChangeText={onChangeNumber}
                 // value={number}
-                placeholder="Ваш телефон"
+                placeholder="Ваш никнейм"
                 keyboardType="numeric"
             />
             <TextInput
                 style={style.input}
                 // onChangeText={onChangeNumber}
                 // value={number}
-                placeholder="Введите пароль"
+                placeholder="Почта"
+                keyboardType="numeric"
+            />
+            <TextInput
+                style={style.input}
+                // onChangeText={onChangeNumber}
+                // value={number}
+                placeholder="Номер телефона"
+                keyboardType="numeric"
+            />
+            <TextInput
+                style={style.input}
+                // onChangeText={onChangeNumber}
+                // value={number}
+                placeholder="Придумайте пароль"
                 keyboardType="numeric"
             />
             <Button title="Войти" onPress={() => navigation.navigate('home')}/>
-            <Button style={style.reg} title="Нет аккаунта? Зарегистрируйтесь!" onPress={() => navigation.navigate('reg')}/>
         </View>
     );
 }
