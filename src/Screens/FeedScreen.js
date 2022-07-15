@@ -43,7 +43,7 @@ function FeedScreen({navigation}) {
                         <Image style={style.photo}
                                source={{uri: feed.image_url}}/>
                         <View style={style.descr}>
-                            <Text>{feed.date}</Text>
+                            <Text>{new Date(feed.date).toLocaleDateString('ru-RU')}</Text>
                             <Text style={style.news}>{feed.title}</Text>
                             <Text>{feed.description}</Text>
                         </View>
