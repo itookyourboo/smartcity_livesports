@@ -1,20 +1,14 @@
 import React from "react";
-import {StyleSheet, Text, View, Button, ScrollView} from "react-native";
+import {StyleSheet, Text, View, Button, ScrollView, TouchableHighlight} from "react-native";
 
 const news = [
     {title: 'Волейбол', desc: 'На направление Волейбол зарегистрировалось +3 команды!'},
     {title: 'Шахматы', desc: 'Установилось четкое время начала соревнований'},
-    {title: 'Баскетбол', desc: 'Напоминание! В связи с эпидемиологической ситуацией болельщиков брать с собой на игру нельзя'},
+    {title: 'Баскетбол', desc: '! В связи с эпидемиологической ситуацией болельщиков брать с собой на игру нельзя'},
     {title: 'Волейбол', desc: 'На направление Волейбол зарегистрировалось +3 команды!'},
 ]
 
 function NotificationScreen({navigation}) {
-
-    // const [deleteBorder, setDeleteBorder] = useState(false)
-
-    // function toggle(props) {
-    //     setDeleteBorder()
-    // }
 
     return (
         <ScrollView>
@@ -30,7 +24,7 @@ function NotificationScreen({navigation}) {
                         </Text>
                         <View style={style.btn}>
                             <Button title="Отметить как прочитанное"
-                        />
+                            />
                         </View>
                     </View>
                 ))
@@ -55,10 +49,26 @@ const style = StyleSheet.create({
         shadowRadius: 4.65,
         elevation: 8,
         backgroundColor: '#F6F6F6',
+        borderLeftWidth: 5,
+        borderLeftColor: 'red'
     },
 
-    // borderLeftWidth: 5,
-    // borderLeftColor: 'red'
+    unmassage: {
+        marginTop: 20,
+        alignSelf: 'stretch',
+        padding: 16,
+        marginHorizontal: 10,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.30,
+        shadowRadius: 4.65,
+        elevation: 8,
+        backgroundColor: '#F6F6F6',
+
+    },
 
     sport: {
         fontSize: 16,
