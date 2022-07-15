@@ -2,6 +2,7 @@ import {useState, createRef, useEffect} from 'react';
 import {ScrollView, View, LogBox, KeyboardAvoidingView} from "react-native";
 import {Button, Text, Card, Dialog, Input, Image} from "@rneui/themed";
 import {EventService} from "../services/EventService";
+import {store} from "../store";
 
 const lorem = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus corporis cupiditate deleniti " +
     "dolores dolorum eos eum hic id illo labore magni, maiores minus molestiae nam nihil, obcaecati quibusdam quo sit?"
@@ -37,7 +38,7 @@ function EventDescriptionScreen({navigation, route}) {
         date = date.toLocaleDateString('ru-RU');
         return (
             <View>
-                {event.image_url && <Card.Image style={{marginBottom: 8}} source={{uri: event.image_url}} />}
+                {event.image_url && <Card.Image style={{marginBottom: 8}} source={{uri: event.image_url}}/>}
                 <Text h4={true}>Где и когда</Text>
                 <Text>{event.place}, {date}</Text>
                 {event.description && <View>
@@ -49,20 +50,35 @@ function EventDescriptionScreen({navigation, route}) {
                 {event.stream_url && <Text h4={true}>Прямая трансляция</Text>}
                 {event.stream_url && <Text style={{color: 'blue'}} onPress={
                     () => Linking.openUrl(event.stream_url)
-                }>{ event.stream_url }</Text>}
+                }>{event.stream_url}</Text>}
             </View>
         )
     }
 
+    function hasApplied() {
+        for (const ev of store.events)
+            if (ev.event.id === eventParams.id)
+                return ev.event;
+    }
+
     return (
         <ScrollView>
-            <KeyboardAvoidingView style={{flex: 1, padding: 16, flexDirection: 'column',
-                alignItems: 'center', justifyItems: 'space-between', justifyContent: 'space-between'}}>
+            <KeyboardAvoidingView style={{
+                flex: 1, padding: 16, flexDirection: 'column',
+                alignItems: 'center', justifyItems: 'space-between', justifyContent: 'space-between'
+            }}>
                 {event && renderEvent(event)}
-                <View style={{ marginTop: 16, width: '100%'}}>
-                    <Button
-                        title="Подать заявку"
-                        onPress={applyEvent}/>
+                <View style={{marginTop: 16, width: '100%'}}>
+                    {
+                        hasApplied() ? (
+                            <Button title="Вы уже зарегистрированы"
+                                    disabled/>
+                        ) : (
+                            <Button
+                                title="Подать заявку"
+                                onPress={applyEvent}/>
+                        )
+                    }
                 </View>
             </KeyboardAvoidingView>
         </ScrollView>

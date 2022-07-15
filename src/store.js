@@ -5,7 +5,9 @@ const [store, setStore] = createStore({
         username: null,
         email: null,
         token: null,
-    }
+    },
+    teams: [],
+    events: []
 });
 
 export {store, setStore};

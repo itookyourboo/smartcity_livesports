@@ -1,27 +1,27 @@
-import React from "react";
+import React, {useState} from "react";
 import {StyleSheet, Text, View, Button, ScrollView} from "react-native";
 
-const news = [
+const defaultNews = [
     {title: 'Волейбол', desc: 'На направление Волейбол зарегистрировалось +3 команды!'},
     {title: 'Шахматы', desc: 'Установилось четкое время начала соревнований'},
     {title: 'Баскетбол', desc: 'Напоминание! В связи с эпидемиологической ситуацией болельщиков брать с собой на игру нельзя'},
-    {title: 'Волейбол', desc: 'На направление Волейбол зарегистрировалось +3 команды!'},
+    {title: 'Волейбол', desc: 'На направление Баскетбол зарегистрировалось +3 команды!'},
 ]
 
 function NotificationScreen({navigation}) {
 
-    // const [deleteBorder, setDeleteBorder] = useState(false)
+    const [news, setNews] = useState(defaultNews);
 
-    // function toggle(props) {
-    //     setDeleteBorder()
-    // }
+    function read(index) {
+        setNews(news.filter((feed) => feed !== news[index]));
+    }
 
     return (
         <ScrollView>
-        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+        <View style={{alignItems: 'center', justifyContent: 'center', marginBottom: 16}}>
             {
-                news.map(({title, desc}) => (
-                    <View style={style.massage}>
+                news.map(({title, desc}, index) => (
+                    <View key={index} style={style.massage}>
                         <Text style={style.sport}>
                             {title}
                         </Text>
@@ -29,8 +29,8 @@ function NotificationScreen({navigation}) {
                             {desc}
                         </Text>
                         <View style={style.btn}>
-                            <Button title="Отметить как прочитанное"
-                        />
+                            <Button title="ОК"
+                            onPress={() => read(index)}/>
                         </View>
                     </View>
                 ))
@@ -74,7 +74,7 @@ const style = StyleSheet.create({
     btn: {
         alignSelf: 'flex-start',
         marginTop: 5,
-
+        width: '100%'
     }
 })
 

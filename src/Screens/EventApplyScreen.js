@@ -2,6 +2,7 @@ import {Keyboard, KeyboardAvoidingView, Platform, TextInput, TouchableWithoutFee
 import React, {useState} from "react";
 import {Button, Input, Text} from "@rneui/themed";
 import {EventService} from "../services/EventService";
+import {store} from "../store";
 
 function EventApplyScreen({navigation, route}) {
     const {event} = route.params;
@@ -10,9 +11,23 @@ function EventApplyScreen({navigation, route}) {
     });
 
     function applyMember() {
-        if (event.team_size === 1) {
-            EventService.applyTeam(event.id, m)
-        }
+        let members = [store.profile.email]
+        if (event.team_size !== 1)
+            members = fields.members.split(/\r?\n/).map(x => x.trim());
+        EventService.applyTeam(event, fields.memberName.trim(), members)
+            .then(res => {
+                navigation.popToTop();
+                navigation.navigate('schedule');
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+
+    function hasApplied() {
+        for (const ev of store.events)
+            if (ev.event.id === event.id)
+                return ev.event;
     }
 
     return (
@@ -28,17 +43,17 @@ function EventApplyScreen({navigation, route}) {
                     />
                 </View>
             ) : (
-                <View style={{ width: '100%' }}>
+                <View style={{width: '100%'}}>
                     <Text>Введите название команды</Text>
                     <Input
                         placeholder="Динамо"
                         onChangeText={(text) => {
                             setFields({...fields, memberName: text})
                         }}/>
-                    <Text style={{ marginBottom: 8}}>Введите почты участников ({event.team_size}){"\n"}
+                    <Text style={{marginBottom: 8}}>Введите почты участников ({event.team_size}){"\n"}
                         Каждую на новой строке</Text>
                     <Input
-                        style={{ textAlignVertical: 'top'}}
+                        style={{textAlignVertical: 'top'}}
                         numberOfLines={event.team_size}
                         placeholder={[...Array(event.team_size).keys()].map(key => (
                             `email${key + 1}@yandex.ru`
@@ -50,9 +65,9 @@ function EventApplyScreen({navigation, route}) {
                     />
                 </View>
             )}
-            <View style={{ width: '100%' }} >
+            <View style={{width: '100%'}}>
                 <Button title="Зарегистрироваться"
-                onPress={applyMember}/>
+                        onPress={applyMember}/>
             </View>
         </View>
     );

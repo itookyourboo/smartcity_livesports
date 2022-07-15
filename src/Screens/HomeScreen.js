@@ -2,9 +2,9 @@ import {Button, Text, View} from "react-native";
 
 
 const btns = [
-    {title: "Вход и Регистрация", screen: 'login'},
+    // {title: "Вход и Регистрация", screen: 'login'},
     {title: "Календарь мероприятий", screen: 'events'},
-    {title: "График соревнований", screen: 'schedule'},
+    {title: "Мои соревнования", screen: 'schedule'},
     {title: "Лента новостей", screen: 'feed'},
     {title: "Уведомления", screen: 'notification'},
 ]

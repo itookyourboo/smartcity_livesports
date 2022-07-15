@@ -69,7 +69,10 @@ class Event(models.Model):
 
     results = models.JSONField(blank=True, null=True, default=dict)
 
-    participants = models.ManyToManyField(Team, blank=True, null=True)
+    participants = models.ManyToManyField(Team, blank=True)
+
+    class Meta:
+        ordering = ['date', 'pk']
 
 
 class Feed(models.Model):

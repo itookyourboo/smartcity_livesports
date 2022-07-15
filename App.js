@@ -11,14 +11,15 @@ import {
     NotificationScreen,
     EventDescriptionScreen
 } from "./src/Screens";
+import {store, setStore} from "./src/store";
+import TokenManager from "./src/services/TokenManager";
 
 const Stack = createNativeStackNavigator();
 
 const screens = [
     {name: 'home', component: HomeScreen, title: 'Умный Город: Живи спортом', opts: {}},
-    {name: 'login', component: LoginScreen, title: 'Регистрация', opts: {}},
     {name: 'events', component: EventsScreen, title: 'Календарь мероприятий', opts: {}},
-    {name: 'schedule', component: ScheduleScreen, title: 'График соревнований', opts: {}},
+    {name: 'schedule', component: ScheduleScreen, title: 'Мои соревнования', opts: {}},
     {name: 'feed', component: FeedScreen, title: 'Лента новостей', opts: {}},
     {name: 'reg', component: RegisterScreen, title: 'Создать аккаунт', opts: {}},
     {name: 'notification', component: NotificationScreen, title: 'Уведомления', opts: {}},
@@ -28,9 +29,16 @@ function App() {
     return (
         <NavigationContainer>
             <Stack.Navigator>
-                {screens.map(({name, component, title, opts}) => (
+                {TokenManager.getToken() == null && (
+                    <Stack.Screen name="login" component={LoginScreen}
+                    options={{
+                        title: 'Авторизация',
+                        animationTypeForReplace: 'pop'
+                    }}/>
+                )}
+                {screens.map(({name, component, title, opts}, index) => (
                     <Stack.Screen
-                        key={name}
+                        key={index}
                         name={name}
                         component={component}
                         options={{
