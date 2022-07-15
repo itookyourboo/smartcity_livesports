@@ -22,7 +22,7 @@ function LoginScreen({navigation}) {
     }
 
     function register() {
-        navigation.navigate('reg');
+        navigation.push('reg');
     }
 
     return (
