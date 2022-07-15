@@ -1,16 +1,13 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from rest_framework import status, viewsets
-from rest_framework.decorators import action
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework import status
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from rest_framework.serializers import ModelSerializer
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
-from .backends import JWTAuthentication
 from .models import Team, Feed, Event
-from .serializers import LoginSerializer, EventShortSerializer, EventSerializer, TeamSerializer
+from .serializers import LoginSerializer, EventShortSerializer, EventSerializer, TeamSerializer, TeamShortSerializer
 from .serializers import RegistrationSerializer
 
 
@@ -78,10 +75,16 @@ class EventViewSet(ModelViewSet):
 
 class TeamViewSet(ModelViewSet):
     queryset = Team.objects.all()
-    serializer_class = TeamSerializer
     permission_classes = [AllowAny]
 
-    def perform_update(self, serializer):
-        instance = self.get_object()
-        user = self.request.user
-        instance.members.add(user)
+    def get_serializer_class(self):
+        if self.action == 'retrieve':
+            return TeamSerializer
+        return TeamShortSerializer
+
+    def perform_create(self, serializer):
+        event = get_object_or_404(Event, pk=self.kwargs.get('event_id'))
+        serializer.save()
+        event.participants.add(serializer)
+        event.save()
+

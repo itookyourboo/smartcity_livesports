@@ -76,23 +76,60 @@ class LoginSerializer(serializers.Serializer):
         }
 
 
-class UserSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField()
+class TeamShortSerializer(serializers.Serializer):
+    class Meta:
+        model = Team
+        fields = ('id', 'name')
 
+
+class UserShortSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', 'email')
 
 
+class UserSerializer(serializers.ModelSerializer):
+    teams = serializers.SerializerMethodField()
+    events = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'teams', 'events')
+
+    def get_teams(self, obj):
+        teams = obj.team_set.all()
+        return TeamShortSerializer(teams, many=True).data
+
+    def get_events(self, obj):
+        teams = obj.team_set.all()
+        events = set()
+        for team in teams:
+            events.update(set(team.event_set.all()))
+        return EventInfoSerializer(list(events), many=True).data
+
+
+class EventInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = ('id', 'name', 'date', 'place')
+
+
 class TeamSerializer(serializers.ModelSerializer):
-    members = UserSerializer(many=True)
+    event = serializers.PrimaryKeyRelatedField(queryset=Event.objects.all(), default=None)
+
+    members = UserShortSerializer(many=True)
+    events = serializers.SerializerMethodField()
 
     class Meta:
         model = Team
         fields = '__all__'
 
     def get_members(self, obj):
-        return UserSerializer(obj.members, many=True).data
+        return UserShortSerializer(obj.members, many=True).data
+
+    def get_events(self, obj):
+        events = obj.event_set.all()
+        return EventInfoSerializer(events, many=True).data
 
 
 class EventShortSerializer(serializers.ModelSerializer):
@@ -101,8 +138,23 @@ class EventShortSerializer(serializers.ModelSerializer):
         fields = ('id', 'sport', 'caption', 'place', 'date', 'image_url')
 
 
+class UserEmailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('email', )
+
+
+class ApplyTeamForEventSerializer(serializers.ModelSerializer):
+    event = serializers.PrimaryKeyRelatedField(queryset=Event.objects.all())
+    members = serializers.ListField(child=serializers.CharField())
+
+    class Meta:
+        model = Team
+        fields = ('name', 'members', 'event')
+
+
 class EventSerializer(serializers.ModelSerializer):
-    participants = TeamSerializer(many=True)
+    participants = TeamShortSerializer(many=True)
 
     class Meta:
         model = Event
