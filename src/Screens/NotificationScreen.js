@@ -1,5 +1,8 @@
 import React, {useState} from "react";
-import {StyleSheet, Text, View, Button, ScrollView} from "react-native";
+import {StyleSheet, Text, View, ScrollView} from "react-native";
+import Button from "../components/Button";
+import {useEffect} from "react";
+import useForceUpdate from "../services/useForceUpdate";
 
 const defaultNews = [
     {title: 'Волейбол', desc: 'На направление Волейбол зарегистрировалось +3 команды!'},
@@ -15,6 +18,15 @@ function NotificationScreen({navigation}) {
     function read(index) {
         setNews(news.filter((feed) => feed !== news[index]));
     }
+
+    const forceUpdate = useForceUpdate();
+
+    useEffect(() => {
+        const intervalId = setInterval(forceUpdate, 5000);
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, []);
 
     return (
         <ScrollView>
@@ -46,6 +58,7 @@ const style = StyleSheet.create({
         alignSelf: 'stretch',
         padding: 16,
         marginHorizontal: 10,
+        borderRadius: 8,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,

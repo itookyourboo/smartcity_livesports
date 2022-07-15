@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
 import {ScrollView, View} from "react-native";
-import {Button, Text, Card, Dialog} from "@rneui/themed";
+import {Text, Card, Dialog} from "@rneui/themed";
+import Button from "../components/Button";
 import {EventService} from "../services/EventService";
 
 
@@ -18,8 +19,9 @@ function EventsScreen({navigation}) {
     }, []);
 
     function eventApply(props) {
-        navigation.push('event_description', {
-            eventParams: props
+        navigation.navigate('event_description', {
+            eventParams: props,
+            merge: true
         });
     }
 
@@ -28,9 +30,9 @@ function EventsScreen({navigation}) {
             <View style={{flex: 1, marginBottom: 16}}>
                 <View>
                     {events && events.map((props) => (
-                        <Card key={props.id}>
+                        <Card key={props.id} borderRadius={8}>
                             <Card.Title>{props.sport}</Card.Title>
-                            {props.image_url && <Card.Image source={{uri: props.image_url}}/>}
+                            {props.image_url && <Card.Image borderRadius={8} source={{uri: props.image_url}}/>}
                             <Card.Divider/>
                             <Text>{props.place} {
                                 new Date(props.date).toLocaleDateString('ru-RU')

@@ -1,6 +1,7 @@
 import {Keyboard, KeyboardAvoidingView, Platform, TextInput, TouchableWithoutFeedback, View} from "react-native";
 import React, {useState} from "react";
-import {Button, Input, Text} from "@rneui/themed";
+import {Input, Text} from "@rneui/themed";
+import Button from "../components/Button";
 import {EventService} from "../services/EventService";
 import {store} from "../store";
 
