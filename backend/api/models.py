@@ -6,7 +6,9 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, UserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.core import validators
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
+from spacy import blank
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -46,3 +48,32 @@ class User(AbstractBaseUser, PermissionsMixin):
         }, settings.SECRET_KEY, algorithm='HS256')
 
         return token
+
+
+class Team(models.Model):
+    name = models.CharField(max_length=255)
+    members = models.ManyToManyField(User)
+
+
+class Event(models.Model):
+    sport = models.CharField(max_length=255)
+    caption = models.CharField(max_length=255, blank=True, null=True, default='')
+    description = models.CharField(max_length=1023, blank=True, null=True, default='')
+    place = models.CharField(max_length=255, blank=True, null=True, default='')
+    date = models.DateTimeField()
+    stream_url = models.URLField(blank=True, null=True, default='')
+    team_size = models.IntegerField(default=1, validators=[
+        MinValueValidator(1),
+    ])
+    image_url = models.URLField(blank=True, null=True, default='')
+
+    results = models.JSONField(blank=True, null=True, default=dict)
+
+    participants = models.ManyToManyField(Team, blank=True, null=True)
+
+
+class Feed(models.Model):
+    title = models.CharField(max_length=255)
+    image_url = models.URLField(blank=True, null=True, default='')
+    date = models.DateTimeField(db_index=True)
+    description = models.CharField(max_length=1023, blank=True, null=True, default='')

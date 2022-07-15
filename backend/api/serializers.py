@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate
 from rest_framework import serializers
-from .models import User
+from .models import User, Team, Event
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -74,3 +74,39 @@ class LoginSerializer(serializers.Serializer):
         return {
             'token': user.token,
         }
+
+
+class UserSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email')
+
+
+class TeamSerializer(serializers.ModelSerializer):
+    members = UserSerializer(many=True)
+
+    class Meta:
+        model = Team
+        fields = '__all__'
+
+    def get_members(self, obj):
+        return UserSerializer(obj.members, many=True).data
+
+
+class EventShortSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = ('id', 'sport', 'caption', 'place', 'date', 'image_url')
+
+
+class EventSerializer(serializers.ModelSerializer):
+    participants = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Event
+        fields = '__all__'
+
+    def get_participants(self, obj):
+        return TeamSerializer(obj.participants, many=True).data
