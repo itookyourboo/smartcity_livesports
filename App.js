@@ -7,7 +7,8 @@ import {
     FeedScreen,
     ScheduleScreen,
     RegisterScreen,
-    EventApplyScreen
+    EventApplyScreen,
+    NotificationScreen
 } from "./src/Screens";
 
 const Stack = createNativeStackNavigator();
@@ -19,6 +20,7 @@ const screens = [
     {name: 'schedule', component: ScheduleScreen, title: 'График соревнований', opts: {}},
     {name: 'feed', component: FeedScreen, title: 'Лента новостей', opts: {}},
     {name: 'reg', component: RegisterScreen, title: 'Создать аккаунт', opts: {}},
+    {name: 'notification', component: NotificationScreen, title: 'Уведомления', opts: {}},
 ]
 
 function App() {
