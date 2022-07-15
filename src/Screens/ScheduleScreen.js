@@ -19,7 +19,7 @@ function ScheduleScreen({navigation}) {
                 </View>
                 <View style={style.more}>
                     <Text style={style.desc}>{sport}</Text>
-                    <Button type="outline" style={style.btn} title="Подробнее" onPress={() => toggleDialog(props)}/>
+                    <Button type="outline" style={style.btn} title="Подробнее" onPress={() => navigation.navigate('notification')}/>
                 </View>
             </View>
             ))
