@@ -52,6 +52,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
+CSRF_TRUSTED_ORIGINS = ['https://*.ngrok.io', ]
 
 ROOT_URLCONF = 'backend.urls'
 
