@@ -1,4 +1,7 @@
 import {Text, View, Image, StyleSheet, ScrollView} from "react-native";
+import {useEffect, useState} from "react";
+import {EventService} from "../services/EventService";
+import {FeedService} from "../services/FeedService";
 
 
 const news = [
@@ -19,16 +22,30 @@ const news = [
 ]
 
 function FeedScreen({navigation}) {
+    const [feeds, setFeeds] = useState([]);
+
+    useEffect(() => {
+        FeedService.allFeeds()
+            .then(({data, status}) => {
+                setFeeds(data);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }, []);
+
+
     return (
         <View style={{alignItems: 'center', justifyContent: 'center'}}>
             <ScrollView>
-                {news.map(({date, title, url}) => (
-                    <View key={title} style={style.block}>
+                {feeds && feeds.map((feed) => (
+                    <View key={feed.title} style={style.block}>
                         <Image style={style.photo}
-                               source={{uri: url}}/>
+                               source={{uri: feed.image_url}}/>
                         <View style={style.descr}>
-                            <Text>{date}</Text>
-                            <Text style={style.news}>{title}</Text>
+                            <Text>{feed.date}</Text>
+                            <Text style={style.news}>{feed.title}</Text>
+                            <Text>{feed.description}</Text>
                         </View>
                     </View>
                 ))}

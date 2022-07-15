@@ -8,7 +8,8 @@ import {
     ScheduleScreen,
     RegisterScreen,
     EventApplyScreen,
-    NotificationScreen
+    NotificationScreen,
+    EventDescriptionScreen
 } from "./src/Screens";
 
 const Stack = createNativeStackNavigator();
@@ -39,9 +40,14 @@ function App() {
                     />
                 ))}
                 <Stack.Screen
+                    name="event_description"
+                    component={EventDescriptionScreen}
+                    options={({route}) => ({title: route.params.eventParams.sport})}
+                />
+                <Stack.Screen
                     name="event_apply"
                     component={EventApplyScreen}
-                    options={({route}) => ({title: route.params.title})}
+                    options={{title: 'Подать заявку'}}
                 />
             </Stack.Navigator>
         </NavigationContainer>
