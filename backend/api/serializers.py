@@ -102,7 +102,7 @@ class EventShortSerializer(serializers.ModelSerializer):
 
 
 class EventSerializer(serializers.ModelSerializer):
-    participants = serializers.SerializerMethodField()
+    participants = TeamSerializer(many=True)
 
     class Meta:
         model = Event

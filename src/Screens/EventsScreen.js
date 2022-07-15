@@ -1,57 +1,44 @@
-import {useState} from 'react';
-import {ScrollView, View, LogBox} from "react-native";
+import {useEffect, useState} from 'react';
+import {ScrollView, View} from "react-native";
 import {Button, Text, Card, Dialog} from "@rneui/themed";
+import {EventService} from "../services/EventService";
 
-
-const events = [
-    {title: 'Волейбол'},
-    {title: 'Настольный теннис'},
-    {title: 'Баскетбол'},
-    {title: 'Бадминтон'},
-    {title: 'Многоборье ГТО'},
-    {title: 'Шахматы'},
-    {title: 'Плавание'},
-]
 
 function EventsScreen({navigation}) {
-    const [openDialog, setOpenDialog] = useState({visible: false});
+    const [events, setEvents] = useState([]);
 
-    function toggleDialog(props) {
-        setOpenDialog({...openDialog, ...props, visible: !openDialog.visible});
-    }
+    useEffect(() => {
+        EventService.allEvents()
+            .then(({data, status}) => {
+                setEvents(data);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }, []);
 
-    function eventApply() {
-        navigation.push('event_apply', {
-            title: openDialog.title,
-            description: openDialog.description
+    function eventApply(props) {
+        navigation.push('event_description', {
+            eventParams: props
         });
-        setOpenDialog({...openDialog, visible: false});
     }
 
     return (
         <ScrollView>
             <View style={{flex: 1, marginBottom: 16}}>
-                <Dialog
-                    isVisible={openDialog.visible}
-                    onBackdropPress={toggleDialog}>
-                    <Dialog.Title title={openDialog.title || 'Мероприятие'}/>
-                    <Text> {openDialog.description || 'Описание мероприятия'} </Text>
-                    <Dialog.Actions>
-                        <Dialog.Button title="Подать заявку" onPress={eventApply}/>
-                        <Dialog.Button title="Закрыть" onPress={toggleDialog}/>
-                    </Dialog.Actions>
-                </Dialog>
-
                 <View>
-                    {events.map((props) => (
-                        <Card key={props.title}>
-                            <Card.Title>{props.title || 'Мероприятие'}</Card.Title>
+                    {events && events.map((props) => (
+                        <Card key={props.id}>
+                            <Card.Title>{props.sport}</Card.Title>
+                            {props.image_url && <Card.Image source={{uri: props.image_url}}/>}
                             <Card.Divider/>
-                            <Text>{props.date || '30 июля 2022'}</Text>
-                            <Text style={{marginBottom: 10}}>{props.description || 'Описание мероприятия'}</Text>
+                            <Text>{props.place} {
+                                new Date(props.date).toLocaleDateString('ru-RU')
+                            }</Text>
+                            { props.caption && <Text style={{marginBottom: 10}}>{props.caption}</Text>}
                             <Button
                                 type="outline" title="Подробнее"
-                                onPress={() => toggleDialog(props)}/>
+                                onPress={() => eventApply(props)}/>
                         </Card>
                     ))}
                 </View>

@@ -1,34 +1,60 @@
-import {useState, createRef} from 'react';
-import {ScrollView, View, LogBox, KeyboardAvoidingView} from "react-native";
-import {Button, Text, Card, Dialog, Input} from "@rneui/themed";
-
-const lorem = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus corporis cupiditate deleniti " +
-    "dolores dolorum eos eum hic id illo labore magni, maiores minus molestiae nam nihil, obcaecati quibusdam quo sit?"
+import {Keyboard, KeyboardAvoidingView, Platform, TextInput, TouchableWithoutFeedback, View} from "react-native";
+import React, {useState} from "react";
+import {Button, Input, Text} from "@rneui/themed";
+import {EventService} from "../services/EventService";
 
 function EventApplyScreen({navigation, route}) {
+    const {event} = route.params;
+    const [fields, setFields] = useState({
+        memberName: "", members: ""
+    });
 
-    const {description, date} = route.params;
-    const teamName = createRef();
-    const teammates = createRef();
-
-    function applyEvent() {
-        navigation.popToTop();
-        navigation.navigate('schedule');
+    function applyMember() {
+        if (event.team_size === 1) {
+            EventService.applyTeam(event.id, m)
+        }
     }
 
     return (
-        <KeyboardAvoidingView style={{flex: 1, padding: 16, alignItems: 'center'}}>
-            <Text style={{marginBottom: 10}} h4={true}> {date || '30 июля 2022'}</Text>
-            <Text style={{marginBottom: 10}}> {description || lorem} </Text>
-            <Text style={{marginBottom: 10}} h4={true}>Регистрация команды</Text>
-            <Input ref={teamName} placeholder="Название команды"/>
-            <Input ref={teammates} placeholder="Участники"/>
-            <Button
-                style={{alignSelf: 'flex-end'}}
-                title="Подать заявку"
-                onPress={applyEvent}
-            />
-        </KeyboardAvoidingView>
+        <View style={{flex: 1, padding: 16, alignItems: 'center', justifyContent: 'center'}}>
+            {event.team_size === 1 ? (
+                <View style={{width: '100%'}}>
+                    <Text>Введите Фамилию, Имя и Отчество</Text>
+                    <Input
+                        placeholder="Иванов Иван Иванович"
+                        onChangeText={(text) => {
+                            setFields({...fields, memberName: text})
+                        }}
+                    />
+                </View>
+            ) : (
+                <View style={{ width: '100%' }}>
+                    <Text>Введите название команды</Text>
+                    <Input
+                        placeholder="Динамо"
+                        onChangeText={(text) => {
+                            setFields({...fields, memberName: text})
+                        }}/>
+                    <Text style={{ marginBottom: 8}}>Введите почты участников ({event.team_size}){"\n"}
+                        Каждую на новой строке</Text>
+                    <Input
+                        style={{ textAlignVertical: 'top'}}
+                        numberOfLines={event.team_size}
+                        placeholder={[...Array(event.team_size).keys()].map(key => (
+                            `email${key + 1}@yandex.ru`
+                        )).join('\n')}
+                        onChangeText={(text) => {
+                            setFields({...fields, members: text})
+                        }}
+                        multiline
+                    />
+                </View>
+            )}
+            <View style={{ width: '100%' }} >
+                <Button title="Зарегистрироваться"
+                onPress={applyMember}/>
+            </View>
+        </View>
     );
 }
 
