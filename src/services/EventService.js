@@ -1,5 +1,6 @@
 import api from "./axiosInstance";
 import TokenManager from "./TokenManager";
+import {store, setStore} from "../store";
 
 const EventService = {
     allEvents() {
@@ -19,11 +20,23 @@ const EventService = {
     },
 
     applyTeam(eventId, memberName, members) {
-        return api.post('teams', {eventId, memberName, members})
-            .then(res => {
-                let { data, status } = res;
-                return { data, status };
-            })
+        return new Promise((resolve, reject) => {
+            const teamInfo = {
+                name: memberName,
+                members: members,
+                eventId: eventId
+            }
+            setStore('teams', v => [...v, teamInfo]);
+            setStore('events', v => {
+                v[eventId] = teamInfo
+            });
+            resolve();
+        });
+        // return api.post('teams', {eventId, memberName, members})
+        //     .then(res => {
+        //         let { data, status } = res;
+        //         return { data, status };
+        //     })
     }
 }
 
