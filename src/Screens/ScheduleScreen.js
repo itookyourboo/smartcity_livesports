@@ -1,9 +1,10 @@
 import {color} from "@rneui/base";
-import {Text, Button, Dialog} from "@rneui/themed";
+import {Text, Dialog} from "@rneui/themed";
+import Button from "../components/Button";
 import {View, StyleSheet, ScrollView} from "react-native";
 import {useEffect, useState} from "react";
-import {EventService} from "../services/EventService";
 import {store} from "../store"
+import useForceUpdate from "../services/useForceUpdate";
 
 function ScheduleScreen({navigation}) {
     const [openDialog, setOpenDialog] = useState({visible: false});
@@ -15,6 +16,15 @@ function ScheduleScreen({navigation}) {
     function eventDescription(event) {
         navigation.push('event_description', { eventParams: event });
     }
+
+    const forceUpdate = useForceUpdate();
+
+    useEffect(() => {
+        const intervalId = setInterval(forceUpdate, 5000);
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, []);
 
     return (
         <ScrollView>
@@ -49,6 +59,7 @@ const style = StyleSheet.create({
         alignSelf: 'stretch',
         padding: 15,
         marginHorizontal: 10,
+        borderRadius: 8,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,

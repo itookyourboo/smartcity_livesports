@@ -3,13 +3,13 @@ import {
     StyleSheet,
     Text,
     View,
-    Button,
     TextInput,
     Keyboard,
     TouchableWithoutFeedback,
     Platform,
     KeyboardAvoidingView
 } from "react-native";
+import Button from "../components/Button";
 import {Input} from "@rneui/themed";
 import {AuthService} from "../services/AuthService";
 import TokenManager from "../services/TokenManager";
@@ -63,8 +63,10 @@ function RegisterScreen({navigation}) {
                             setFields({...fields, password: text})
                         }}
                     />
-                    <Button title="Зарегистрироваться" onPress={register}/>
-                    {data && <Text>{data}</Text>}
+                    <View style={{width: '100%'}}>
+                        <Button title="Зарегистрироваться" onPress={register}/>
+                        {data && <Text>{data}</Text>}
+                    </View>
                 </View>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>

@@ -1,7 +1,7 @@
 import {Text, View, Image, StyleSheet, ScrollView} from "react-native";
 import {useEffect, useState} from "react";
-import {EventService} from "../services/EventService";
 import {FeedService} from "../services/FeedService";
+import useForceUpdate from "../services/useForceUpdate";
 
 
 const news = [
@@ -32,16 +32,24 @@ function FeedScreen({navigation}) {
             .catch(err => {
                 console.log(err);
             })
-    }, []);
+    });
 
+    const forceUpdate = useForceUpdate();
+
+    useEffect(() => {
+        const intervalId = setInterval(forceUpdate, 5000);
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, []);
 
     return (
         <View style={{alignItems: 'center', justifyContent: 'center'}}>
             <ScrollView>
                 {feeds && feeds.map((feed) => (
                     <View key={feed.title} style={style.block}>
-                        <Image style={style.photo}
-                               source={{uri: feed.image_url}}/>
+                        {feed.image_url && <Image style={style.photo}
+                                                  source={{uri: feed.image_url}}/>}
                         <View style={style.descr}>
                             <Text>{new Date(feed.date).toLocaleDateString('ru-RU')}</Text>
                             <Text style={style.news}>{feed.title}</Text>
@@ -58,6 +66,7 @@ const style = StyleSheet.create({
     block: {
         marginTop: 16,
         shadowColor: "#000",
+        borderRadius: 8,
         shadowOffset: {
             width: 0,
             height: 4,
@@ -66,7 +75,6 @@ const style = StyleSheet.create({
         shadowRadius: 4.65,
         elevation: 8,
         backgroundColor: '#F6F6F6',
-        // marginHorizontal: 10
     },
 
     photo: {

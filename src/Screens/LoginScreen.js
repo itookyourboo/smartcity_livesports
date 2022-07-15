@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {StyleSheet, Keyboard, TouchableWithoutFeedback, Platform, KeyboardAvoidingView, View, Text} from "react-native";
-import {Button, Input} from "@rneui/themed";
+import {Input} from "@rneui/themed";
+import Button from "../components/Button";
 import {AuthService} from "../services/AuthService";
 
 function LoginScreen({navigation}) {
@@ -49,10 +50,11 @@ function LoginScreen({navigation}) {
                             setFields({...fields, password: text})
                         }}
                     />
-                    <View>
+                    <View style={{ width: '100%'}}>
                         <Button style={{marginBottom: 10}}
                                 title="Войти"
                                 onPress={login}/>
+                        <View style={{marginTop: 10}}></View>
                         <Button type="outline"
                                 title="Регистрация"
                                 onPress={register}/>

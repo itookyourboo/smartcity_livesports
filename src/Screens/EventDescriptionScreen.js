@@ -1,8 +1,9 @@
 import {useState, createRef, useEffect} from 'react';
 import {ScrollView, View, LogBox, KeyboardAvoidingView} from "react-native";
-import {Button, Text, Card, Dialog, Input, Image} from "@rneui/themed";
+import {Text, Card, Dialog, Input, Image} from "@rneui/themed";
 import {EventService} from "../services/EventService";
 import {store} from "../store";
+import Button from "../components/Button";
 
 const lorem = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus corporis cupiditate deleniti " +
     "dolores dolorum eos eum hic id illo labore magni, maiores minus molestiae nam nihil, obcaecati quibusdam quo sit?"
