@@ -14,7 +14,7 @@ function LoginScreen({navigation}) {
     function login() {
         AuthService.authenticate(fields.email, fields.password)
             .then(res => {
-                navigation.popToTop();
+                navigation.replace('home');
             })
             .catch(err => {
                 setData(err.message);

@@ -1,17 +1,9 @@
 import {color} from "@rneui/base";
 import {Text, Button, Dialog} from "@rneui/themed";
 import {View, StyleSheet, ScrollView} from "react-native";
-import {useState} from "react";
-
-const lorem = "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus corporis cupiditate deleniti " +
-    "dolores dolorum eos eum hic id illo labore magni, maiores minus molestiae nam nihil, obcaecati quibusdam quo sit?"
-
-const compl = [
-    {date: "7 августа", sport: 'Теннис'},
-    {date: "15 августа", sport: 'Волейбол'},
-]
-
-// random color
+import {useEffect, useState} from "react";
+import {EventService} from "../services/EventService";
+import {store} from "../store"
 
 function ScheduleScreen({navigation}) {
     const [openDialog, setOpenDialog] = useState({visible: false});
@@ -20,27 +12,28 @@ function ScheduleScreen({navigation}) {
         setOpenDialog({...openDialog, ...props, visible: !openDialog.visible});
     }
 
+    function eventDescription(event) {
+        navigation.push('event_description', { eventParams: event });
+    }
+
     return (
         <ScrollView>
             <View style={{flex: 1, marginBottom: 16}}>
-                <Dialog
-                    isVisible={openDialog.visible}
-                    onBackdropPress={toggleDialog}>
-                    <Dialog.Title title={openDialog.sport || 'Волейбол'}/>
-                    <Text style={{marginBottom: 10}}> {openDialog.date || '15 июля'} </Text>
-                    <Text> {lorem} </Text>
-                </Dialog>
                 {
-                    compl.map(({date, sport}) => (
-                        <View key={sport} style={style.block}>
-                            <View style={style.date}>
-                                <Text style={style.num}>{date}</Text>
+                    store.teams.map(({name, members, event}) => (
+                        <View key={event.id} style={style.block}>
+                            <View style={style.more}>
+                                <Text style={style.num}>{
+                                    new Date(event.date).toLocaleDateString('ru-RU')
+                                }</Text>
+                                <Text>{event.place}</Text>
                             </View>
                             <View style={style.more}>
-                                <Text style={style.desc}>{sport}</Text>
+                                <Text style={style.desc}>{event.sport}</Text>
                                 <Button type="outline" style={style.btn} title="Подробнее"
-                                        onPress={() => toggleDialog({date, sport})}/>
+                                        onPress={() => eventDescription(event)}/>
                             </View>
+                            <Text> {name} </Text>
                         </View>
                     ))
                 }

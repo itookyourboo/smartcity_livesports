@@ -1,6 +1,7 @@
 import api from "./axiosInstance";
 import TokenManager from "./TokenManager";
 import {store, setStore} from "../store";
+import {produce} from "solid-js/store";
 
 const EventService = {
     allEvents() {
@@ -19,17 +20,15 @@ const EventService = {
             });
     },
 
-    applyTeam(eventId, memberName, members) {
+    applyTeam(event, memberName, members) {
         return new Promise((resolve, reject) => {
             const teamInfo = {
                 name: memberName,
                 members: members,
-                eventId: eventId
+                event: event
             }
             setStore('teams', v => [...v, teamInfo]);
-            setStore('events', v => {
-                v[eventId] = teamInfo
-            });
+            setStore('events', v => [...v, teamInfo]);
             resolve();
         });
         // return api.post('teams', {eventId, memberName, members})

@@ -7,7 +7,7 @@ const AuthService = {
         return api.post("login", {email, password})
             .then(res => {
                 let { data, status } = res;
-                setStore('store', 'profile', 'email', email);
+                setStore('profile', 'email', email);
                 TokenManager.saveToken(data.token);
                 return { data, status };
             })

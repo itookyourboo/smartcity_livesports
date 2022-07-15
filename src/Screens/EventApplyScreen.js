@@ -14,7 +14,7 @@ function EventApplyScreen({navigation, route}) {
         let members = [store.profile.email]
         if (event.team_size !== 1)
             members = fields.members.split(/\r?\n/).map(x => x.trim());
-        EventService.applyTeam(event.id, fields.memberName.trim(), members)
+        EventService.applyTeam(event, fields.memberName.trim(), members)
             .then(res => {
                 navigation.popToTop();
                 navigation.navigate('schedule');
@@ -22,6 +22,12 @@ function EventApplyScreen({navigation, route}) {
             .catch(err => {
                 console.log(err);
             })
+    }
+
+    function hasApplied() {
+        for (const ev of store.events)
+            if (ev.event.id === event.id)
+                return ev.event;
     }
 
     return (
