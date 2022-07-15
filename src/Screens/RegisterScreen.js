@@ -25,7 +25,7 @@ function RegisterScreen({navigation}) {
     function register() {
         AuthService.register(fields.username, fields.email, fields.password)
             .then(res => {
-                navigation.popToTop();
+                navigation.navigate('home');
             })
             .catch(err => {
                 setData(err.message);
