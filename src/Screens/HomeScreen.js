@@ -6,7 +6,7 @@ const btns = [
     {title: "Календарь мероприятий", screen: 'events'},
     {title: "График соревнований", screen: 'schedule'},
     {title: "Лента новостей", screen: 'feed'},
-    {title: "Уведомления", screen: 'notif'},
+    {title: "Уведомления", screen: 'notification'},
 ]
 
 function HomeScreen({navigation}) {
